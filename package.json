@@ -44,5 +44,10 @@
     "web": "expo start --web",
     "lint": "expo lint"
   },
+  "expo": {
+    "experiments": {
+      "reactNativeDevTools": false
+    }
+  },
   "private": true
 }
