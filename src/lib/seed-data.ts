@@ -1,0 +1,147 @@
+import type { MenuItem, Restaurant } from '@/types';
+import { MAP_CENTER } from '@/types';
+
+function offsetCoord(index: number): { latitude: number; longitude: number } {
+  const angle = (index * 47 * Math.PI) / 180;
+  const km = 0.5 + (index % 5) * 0.4;
+  const dLat = (km / 111) * Math.cos(angle);
+  const dLng = (km / (111 * Math.cos((MAP_CENTER.latitude * Math.PI) / 180))) * Math.sin(angle);
+  return {
+    latitude: MAP_CENTER.latitude + dLat,
+    longitude: MAP_CENTER.longitude + dLng,
+  };
+}
+
+export const SEED_RESTAURANTS: Restaurant[] = [
+  {
+    id: 'hollywood-starz',
+    name: 'Hollywood Starz Cafe',
+    imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800',
+    category: 'Cafe',
+    priceLevel: '$$',
+    rating: 4.9,
+    ratingCount: 124,
+    address: 'Jl. Raya Bekasi No. 12',
+    deliveryTime: '20-30 min',
+    location: offsetCoord(0),
+    isActive: true,
+    hasOffer: true,
+  },
+  {
+    id: 'really-cool-burgers',
+    name: 'Really Cool Burgers',
+    imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800',
+    category: 'Burger',
+    priceLevel: '$$',
+    rating: 4.7,
+    ratingCount: 89,
+    address: 'Jl. Ahmad Yani Bekasi',
+    deliveryTime: '25-35 min',
+    location: offsetCoord(1),
+    isActive: true,
+  },
+  {
+    id: 'super-good-cafe',
+    name: 'Super Good Cafe',
+    imageUrl: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800',
+    category: 'Asian',
+    priceLevel: '$$$',
+    rating: 4.8,
+    ratingCount: 56,
+    address: 'Summarecon Bekasi',
+    deliveryTime: '30-40 min',
+    location: offsetCoord(2),
+    isActive: true,
+    hasOffer: true,
+  },
+  {
+    id: 'fast-burgers',
+    name: 'Fast Burgers',
+    imageUrl: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800',
+    category: 'Burger',
+    priceLevel: '$',
+    rating: 4.5,
+    ratingCount: 210,
+    address: 'Perumahan Harapan Indah',
+    deliveryTime: '15-25 min',
+    location: offsetCoord(3),
+    isActive: true,
+  },
+  {
+    id: 'japanese-taste',
+    name: 'Real Japanese Taste',
+    imageUrl: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800',
+    category: 'Asian',
+    priceLevel: '$$$',
+    rating: 4.9,
+    ratingCount: 78,
+    address: 'Grand Galaxy Park area',
+    deliveryTime: '35-45 min',
+    location: offsetCoord(4),
+    isActive: true,
+    hasOffer: true,
+  },
+];
+
+export const SEED_MENU_ITEMS: MenuItem[] = [
+  {
+    id: 'm1',
+    restaurantId: 'really-cool-burgers',
+    name: 'Classic Cheese Burger',
+    description: 'Beef patty, cheddar, lettuce, tomato',
+    price: 45000,
+    imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400',
+    isPopular: true,
+    category: 'Burgers',
+  },
+  {
+    id: 'm2',
+    restaurantId: 'really-cool-burgers',
+    name: 'Double Beef Burger',
+    description: 'Two patties, special sauce',
+    price: 65000,
+    imageUrl: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=400',
+    isPopular: true,
+    category: 'Burgers',
+  },
+  {
+    id: 'm3',
+    restaurantId: 'really-cool-burgers',
+    name: 'Crispy Chicken Burger',
+    description: 'Fried chicken, mayo, pickles',
+    price: 42000,
+    imageUrl: 'https://images.unsplash.com/photo-1606755962773-995ffc21aa81?w=400',
+    isPopular: false,
+    category: 'Burgers',
+  },
+  {
+    id: 'm4',
+    restaurantId: 'hollywood-starz',
+    name: 'Starz Latte',
+    description: 'House blend espresso with steamed milk',
+    price: 35000,
+    imageUrl: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400',
+    isPopular: true,
+    category: 'Drinks',
+  },
+  {
+    id: 'm5',
+    restaurantId: 'hollywood-starz',
+    name: 'Avocado Toast',
+    description: 'Sourdough, smashed avocado, poached egg',
+    price: 55000,
+    imageUrl: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400',
+    isPopular: true,
+    category: 'Breakfast',
+  },
+  {
+    id: 'm6',
+    restaurantId: 'japanese-taste',
+    name: 'Salmon Sushi Set',
+    description: '12 pcs assorted nigiri',
+    price: 120000,
+    imageUrl: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400',
+    isPopular: true,
+    category: 'Sushi',
+  },
+];
