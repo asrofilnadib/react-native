@@ -1,56 +1,62 @@
-# Welcome to your Expo app 👋
+# MealsToGo
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Food ordering on-the-go — Expo 56 + NativeWind + Clerk + Firebase + Xendit.
 
-## Get started
+## Setup
 
-1. Install dependencies
+1. Copy `.env.example` to `.env` and fill in Clerk + Firebase keys.
+2. `npm install`
+3. `npm start` — mobile | `npm run web` — includes admin at `/admin`
 
-   ```bash
-   npm install
-   ```
+### Clerk
 
-2. Start the app
+- Enable Email/Password and OAuth (e.g. Google) in Clerk dashboard.
+- Set `publicMetadata.role` to `"admin"` for admin users.
 
-   ```bash
-   npx expo start
-   ```
+### Firebase
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+- Create a Firebase project and add a web app.
+- Deploy rules: `firebase deploy --only firestore:rules`
+- Deploy functions (set secrets first):
 
 ```bash
-npm run reset-project
+cd functions && npm install && npm run build
+firebase functions:secrets:set CLERK_SECRET_KEY
+firebase functions:secrets:set XENDIT_SECRET_KEY
+firebase functions:secrets:set XENDIT_WEBHOOK_VERIFICATION_TOKEN
+firebase deploy --only functions
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Xendit (server only — jangan masuk `.env` Expo)
 
-### Other setup steps
+1. Copy `functions/.env.example` → `functions/.env`
+2. Isi:
+   - `XENDIT_SECRET_KEY` = secret key development (`xnd_development_...`) dari [Xendit Dashboard](https://dashboard.xendit.co/settings/developers#api-keys)
+   - `CLERK_SECRET_KEY` = sama seperti di Clerk Dashboard (Development)
+   - `XENDIT_WEBHOOK_VERIFICATION_TOKEN` = dari Xendit webhook settings (setelah deploy)
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+3. Deploy + set secrets production:
+```bash
+firebase functions:secrets:set XENDIT_SECRET_KEY
+firebase functions:secrets:set CLERK_SECRET_KEY
+firebase functions:secrets:set XENDIT_WEBHOOK_VERIFICATION_TOKEN
+```
 
-## Learn more
+Webhook URL: `https://us-central1-mealstogo-d77b1.cloudfunctions.net/xenditWebhook`
 
-To learn more about developing your project with Expo, look at the following resources:
+### `.env` root (Expo app saja)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Hanya variabel `EXPO_PUBLIC_*`. Isi `EXPO_PUBLIC_FIREBASE_API_KEY` dari Firebase Console (satu field yang masih kosong di `.env` lu).
 
-## Join the community
+## Routes
 
-Join our community of developers creating universal apps.
+| Route | Description |
+|-------|-------------|
+| `/` | Auth redirect |
+| `/(tabs)` | Restaurants, Offers, Account |
+| `/admin` | Web-only admin (master data) |
+| `/map` | Leaflet map of restaurants |
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Map center (seed)
+
+Default cluster: `-6.245775, 106.986666` (Bekasi area).
