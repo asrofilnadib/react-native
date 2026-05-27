@@ -45,7 +45,7 @@ export default function HomeScreen() {
 
         <ThemedView type="backgroundElement" style={styles.stepContainer}>
           <HintRow
-            title="Try editing"
+            title="Hello World!"
             hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
           />
           <HintRow title="Dev tools" hint={getDevMenuHint()} />
